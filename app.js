@@ -1,4 +1,5 @@
 const express=require("express")
+const { blogs } = require("./model/index")
 const app=express()
 
 
@@ -22,9 +23,20 @@ app.get("/createBlog",(req,res)=>{
 
 })
 //node maa halnu paro form data ui bata
-app.post("/createBlog",(req,res)=>{
-    console.log(req.body)
-    console.log("hello world")
+app.post("/createBlog",async(req,res)=>{
+    const {title,subTitle,description}=req.body
+    
+     title,
+     subTitle,
+     description
+    
+    await blogs.create({
+        title:title,
+        description:description,
+        subTitle:subTitle
+    })
+    
+    console.log("form submitted successfully...")
 })
 
 app.listen(4000,()=>{
