@@ -1,44 +1,29 @@
 const express=require("express")
-const { blogs } = require("./model/index")
 const app=express()
 
+//const { blogs } = require("./model/index")
+//const { renderCreateBlog, createBlog, allBlogs, singleBlog, deleteBlog, renderEditBlog, editBlog } = require("./controller/blog/blogController")
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
+//routes here
+const blogRoute=require("./routes/blogRoute")
+const authRoute=require("./routes/authRoute")
+app.use('',blogRoute)
+app.use('',authRoute)  // localhost:4000/register --yo url type garda mero api hit hunxa alternative below
+//app.use("/api",authroute)  //localhost:4000/api/register --yo url type garda aauthyo
 //database connection
 require("./model/index")
-//form bata ke data audai xa tyo parse gar otherwise undefined aauxa so code
- app.use(express.json())
- app.use(express.urlencoded({extended:true}))
+
  // telling node js to set ejs 
 app.set('view engine','ejs')
 
-//allblogs ko lai 
-app.get('/',(req,res)=>{
-    res.render("blogs")
-})
 
-//createBlog ko lai 
-app.get("/createBlog",(req,res)=>{
-    res.render("createBlog")
-  
 
-})
-//node maa halnu paro form data ui bata
-app.post("/createBlog",async(req,res)=>{
-    const {title,subTitle,description}=req.body
-    
-     title,
-     subTitle,
-     description
-    
-    await blogs.create({
-        title:title,
-        description:description,
-        subTitle:subTitle
-    })
-    
-    console.log("form submitted successfully...")
-})
 
 app.listen(4000,()=>{
     console.log("node app started at PORT 4000")
 })
+
+
+

@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
       },
+//       confirmPassword:{
+// type: DataTypes.STRING
+//       }
       
     });
     return User;
