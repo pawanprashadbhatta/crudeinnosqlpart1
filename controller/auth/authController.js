@@ -1,5 +1,6 @@
 const { User } = require("../../model")
 const bcrypt=require("bcrypt")
+const jwt=require("jsonwebtoken")
 
 //yo api le form dekaune honi
 exports.renderRegisterUser=(req,res)=>{
@@ -45,7 +46,12 @@ const isMatched =bcrypt.compareSync(password,associatedpassword)
 if(!isMatched){
     res.send("invalid email or password")
 }else{
-    res.send("successful logged in")
+   const token= jwt.sign({id:associatedUserExists[0].id},process.env.SECRETKEY,{expiresIn:"5d"})
+//    console.log(token) 
+   //token vanne name or variabe baniyem ani jwt.sign method use garera method maa 2 object type banyeum 1 secrect key banyeum
+   res.cookie('token',token) 
+   res.send("logged in successful")
 }
+
  }
 }

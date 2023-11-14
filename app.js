@@ -1,6 +1,6 @@
 const express=require("express")
 const app=express()
-
+require("dotenv").config()//env fine install gareko npm bata and require and config gareko default config
 //const { blogs } = require("./model/index")
 //const { renderCreateBlog, createBlog, allBlogs, singleBlog, deleteBlog, renderEditBlog, editBlog } = require("./controller/blog/blogController")
 app.use(express.json())
@@ -20,10 +20,12 @@ app.set('view engine','ejs')
 
 
 
-
-app.listen(4000,()=>{
-    console.log("node app started at PORT 4000")
+const PORT=process.env.PORT
+app.listen(PORT,()=>{
+    console.log("node app started at PORT "+{PORT})
 })
 
 
 
+//git maa upload folder remove garne command
+//git rm -r --catched foldername

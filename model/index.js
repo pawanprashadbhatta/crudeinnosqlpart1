@@ -29,6 +29,9 @@ db.sequelize = sequelize;
 // import model files
 db.blogs = require("./blogModel.Js")(sequelize, DataTypes);
 db.User = require("./userModel.js")(sequelize, DataTypes);
+//relationship between blogs and user
+db.User.hasMany(db.blogs)
+db.blogs.belongsTo(db.User)
 
 db.sequelize.sync({ force:false }).then(() => {
   console.log("yes re-sync done");

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
 //       confirmPassword:{
-// type: DataTypes.STRING
+// type: DataTypes.STRING  yo onform password not here bad aproach
 //       }
       
     });
