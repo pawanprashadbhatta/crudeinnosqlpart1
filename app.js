@@ -3,6 +3,8 @@ const app=express()
 require("dotenv").config()//env fine install gareko npm bata and require and config gareko default config
 //const { blogs } = require("./model/index")
 //const { renderCreateBlog, createBlog, allBlogs, singleBlog, deleteBlog, renderEditBlog, editBlog } = require("./controller/blog/blogController")
+const cookieParser=require("cookie-parser")
+app.use(cookieParser()) //cookie parse garna lai code
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
@@ -19,7 +21,6 @@ require("./model/index")
 app.set('view engine','ejs')
 
 
-
 const PORT=process.env.PORT
 app.listen(PORT,()=>{
     console.log("node app started at PORT "+{PORT})
@@ -28,4 +29,4 @@ app.listen(PORT,()=>{
 
 
 //git maa upload folder remove garne command
-//git rm -r --catched foldername
+//git rm -r --cached foldername
