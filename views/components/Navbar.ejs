@@ -1,11 +1,24 @@
 <header>
-
+<style>
+    a{
+        background-color: aqua;
+    }
+</style>
 <h1>
-<a style="color:wheat" href="/">My site</a>
+<a style="color:wheat" href="/">CMS</a>
 
 </h1>
-<a href="/createBlog">Add Blog</a>
-<a href="/register">Register</a>
-<a href="/login">Login</a>
-<a href="/myBlog">myBlog</a>
+<% if(currentUser){ %>
+    <a href="/createBlog">Add Blog</a>
+    <a href="/myBlog">myBlog</a>
+    <a href="/logout">Logout</a>
+
+<%}else{ %>
+
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
+    <% } %>
+
+
+
 </header>

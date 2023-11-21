@@ -1,6 +1,7 @@
 const { User } = require("../../model")
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
+const sendEmail = require("../../services/sendEmail")
 
 //yo api le form dekaune honi
 exports.renderRegisterUser=(req,res)=>{
@@ -55,3 +56,93 @@ if(!isMatched){
 
  }
 }
+
+exports.logout=(req,res)=>{
+    res.clearCookie('token')
+    res.redirect("/")
+  }
+
+  exports.renderForgotPassword=(req,res)=>{
+    res.render("forgotPassword")
+  }
+
+  exports.checkForgotPassword=async(req,res)=>{
+    const userEmail=req.body.userEmail
+    //validate if email is given or not
+    if(!userEmail){
+     res.send("please enter email.")
+   }
+   //if email deyo vane form bata databse ko table maa tyo email check garna we
+const userExist=await User.findAll({
+    where:{
+        userEmail:userEmail
+    }
+})
+if(userExist==0){
+    res.send("no email found please register first..")
+}
+else{
+    const otpGenerated=Math.floor(1000000*Math.random(900000))
+   // console.log(otpGenerated)
+    //deyeko and vetyeko email ma otp pathaune
+    sendEmail({
+        userEmail:userEmail,
+        subject:"password recovery otp,",
+        otp:otpGenerated
+    })
+    userExist[0].otp=otpGenerated
+    userExist[0].otpGeneratedTime=Date.now()  //time milisecond ma save hunxa
+    await userExist[0].save()//save garna above 2 line of code 
+    res.redirect("/otp?userEmail="+userEmail)
+}
+  }
+
+
+  exports.renderOtpForm=(req,res)=>{
+    const userEmail=req.query.userEmail
+    res.render("otp",{userEmail:userEmail})
+  }
+  
+  exports.handleOtp=async(req,res)=>{
+const userEmail=req.params.id
+
+const otp= req.body.otp
+
+
+if(!otp ||!userEmail){
+   return res.send("please send otp and id")
+}
+// try{ 
+const userData=  await User.findAll({
+    where:{
+        userEmail:userEmail,
+        otp:otp
+    }
+  })
+
+  console.log("User Data:", userData);
+  if(userData.length== 0){
+    res.send("invalid otp")
+  }else{
+    const currentTime=Date.now()//current time
+    const otpGeneratedTime=userData[0].otpGeneratedTime//past time
+    if(currentTime-otpGeneratedTime<=120000){
+      userData[0].otp=null
+      userData[0].otpGeneratedTime=null
+await userData[0].save()
+        res.redirect("/changePassword")
+    }else{
+        res.send("otp has been expired")
+    }
+  }
+// }
+  // catch (error) {
+  //   console.error("Database Error:", error);
+  //   res.status(500).send("Internal Server Error");
+  // }
+  }
+
+  //changepassword api
+  exports.renderChangePassword=(req,res)=>{
+    res.render("changePassword")
+  }

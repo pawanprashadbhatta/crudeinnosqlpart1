@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       userEmail: {
         type: DataTypes.STRING,
+        allowNull:false,
+        unique:true
+        
       },
       password: {
         type: DataTypes.STRING,
@@ -13,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
 //       confirmPassword:{
 // type: DataTypes.STRING  yo onform password not here bad aproach
 //       }
+otp:{
+  type:DataTypes.STRING
+},
+otpGeneratedTime:{
+  type:DataTypes.STRING
+}
       
     });
     return User;

@@ -17,12 +17,13 @@ const userExist=await User.findAll({
     where:{
         id:decodedResult.id
     }
-})
+}) 
 if(userExist.length==0){
     res.send("user with that token doesnot exist")
 }else{
     req.user=userExist;
     req.userId=userExist[0].id
+    //console.log(req.userId)
     next()
 }
 

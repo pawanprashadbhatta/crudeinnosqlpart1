@@ -1,11 +1,13 @@
 const { renderCreateBlog, createBlog, renderEditBlog, editBlog, allBlogs, deleteBlog, singleBlog, renderMyBlog } = require("../controller/blog/blogController")
 const { isAuthenticated } = require("../middleware/isAuthenticated")
-
+const { isValidUser } = require("../middleware/isValidUser")
+const {multer,storage}=require("../middleware/multerConfig")
+const upload=multer({storage:storage})
 const router=require("express").Router()
-router.route("/createBlog").get(renderCreateBlog).post(isAuthenticated, createBlog)
-router.route("/editBlog/:id").get(renderEditBlog).post(isAuthenticated,editBlog)
+router.route("/createBlog").get(isAuthenticated,renderCreateBlog).post(isAuthenticated,upload.single("image"), createBlog)
+router.route("/editBlog/:id").get(isAuthenticated,isValidUser, renderEditBlog).post(isAuthenticated, isValidUser,upload.single("image"),(editBlog))
 router.route("/").get(allBlogs)
-router.route("/delete/:id").get(isAuthenticated,deleteBlog)
+router.route("/delete/:id").get(isAuthenticated,isValidUser,deleteBlog)
 router.route("/single/:id").get(isAuthenticated,singleBlog)
 router.route("/myBlog").get(isAuthenticated,renderMyBlog)
 module.exports=router

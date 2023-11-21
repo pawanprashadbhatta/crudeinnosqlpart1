@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Blog</title>
+    <title>CMS</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,22 +26,10 @@
         .navbar {
             background-color: #333;
             overflow: hidden;
+            color: wheat;
         }
 
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
+        
         main {
            
             max-width: 800px;
@@ -83,7 +71,7 @@
      <%  }else{  %>
         <% blogs.forEach((blog)=>{  %>
        <div class="article">
-      
+        <img src="<%-blog.image %> " alt="image" height="150px" width="100px"/>
             <h2><%-blog.title %></h2>
             <h3><%-blog.subTitle %></h3>
             <p><%-blog.description %></p>

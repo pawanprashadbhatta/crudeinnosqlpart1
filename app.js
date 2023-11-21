@@ -7,7 +7,14 @@ const cookieParser=require("cookie-parser")
 app.use(cookieParser()) //cookie parse garna lai code
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-
+//node js lai file access garana dey vanne code below
+app.use(express.static("public"))
+app.use(express.static("uploads/")) 
+//res.local here this is used to make dynamic navbar
+app.use((req,res,next)=>{
+    res.locals.currentUser=req.cookies.token //token name ko cookie banathyem tyo lai call gareko
+next()
+})
 //routes here
 const blogRoute=require("./routes/blogRoute")
 const authRoute=require("./routes/authRoute")

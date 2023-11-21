@@ -50,9 +50,7 @@
 </head>
 <body>
     <%-include("./components/Navbar")%>
-    <header>
-        <h1>CMS</h1>
-    </header>
+   
     <main>
         <article>
             <h2><%-singleBlogData[0].title%></h2>
@@ -61,7 +59,7 @@
 
         <article>
             <h2><%-singleBlogData[0].subTitle%></h2>
-           
+            <img src="<%-singleBlogData[0].image %> " alt="image" height="500px" width="400px"/>
         </article>
 
         <article>
