@@ -3,6 +3,8 @@ const jwt=require("jsonwebtoken")
 // destructure garda above code 
 const {promisify}=require("util")
 const { User } = require("../model")
+const { decode } = require("punycode")
+const { decodeToken } = require("../services/decodeToken")
 exports.isAuthenticated=async(req,res,next)=>{
 const token=req.cookies.token
 // check if token given or not
@@ -10,7 +12,7 @@ if(!token){
    return res.send("go for login first")
 }
 // verify if token is ligit or not
-const decodedResult=await promisify (jwt.verify)(token,process.env.SECRETKEY)
+const decodedResult=await decodeToken(token,process.env.SECRETKEY)
 //console.log(decodedResult)
 //check if that userid(id) users table ma exist garxa vanera
 const userExist=await User.findAll({

@@ -11,13 +11,21 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static("public"))
 app.use(express.static("uploads/")) 
 //res.local here this is used to make dynamic navbar
-app.use((req,res,next)=>{
+app.use(async(req,res,next)=>{
     res.locals.currentUser=req.cookies.token //token name ko cookie banathyem tyo lai call gareko
+    const token=req.cookies.token
+    if(token){
+        const decodedResult=await decodeToken(token,process.env.SECRETKEY)
+        if(decodedResult&&decodedResult.id){
+            res.locals.currentUserId=decodedResult.id
+        }
+    }
 next()
 })
 //routes here
 const blogRoute=require("./routes/blogRoute")
 const authRoute=require("./routes/authRoute")
+const { decodeToken } = require("./services/decodeToken")
 app.use('',blogRoute)
 app.use('',authRoute)  // localhost:4000/register --yo url type garda mero api hit hunxa alternative below
 //app.use("/api",authroute)  //localhost:4000/api/register --yo url type garda aauthyo

@@ -25,10 +25,10 @@ exports.createBlog=async(req,res)=>{
       return res.send(
           "Please provide title,description,subTitle,file"
       )
-      const fileName=req.file.filename
+     
   }
 
-
+  const fileName=req.file.filename
 
 
    

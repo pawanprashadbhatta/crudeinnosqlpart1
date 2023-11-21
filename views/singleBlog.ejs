@@ -70,8 +70,12 @@
             <h2><i>published At:</i><%-singleBlogData[0].createdAt.toISOString().slice(0,10)%></h2>
     <p>Author:<%-singleBlogData[0].user.userName %></p>
         </article>
-       <article> <button><a href="/delete/<%- singleBlogData[0].id %>">delete</a></button></article>
-       <article> <button><a href="/editBlog/<%- singleBlogData[0].id %>">edit</a></button></article>
+     <% if(currentUser){%>
+        <%  if(currentUserId==singleBlogData[0].user.id){ %>
+        <article> <button><a href="/delete/<%- singleBlogData[0].id %>">delete</a></button></article>
+        <article> <button><a href="/editBlog/<%- singleBlogData[0].id %>">edit</a></button></article>
+        <% }%>
+        <%}%>
     </main>
  
 </body>

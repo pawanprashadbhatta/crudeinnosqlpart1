@@ -8,6 +8,6 @@ router.route("/createBlog").get(isAuthenticated,renderCreateBlog).post(isAuthent
 router.route("/editBlog/:id").get(isAuthenticated,isValidUser, renderEditBlog).post(isAuthenticated, isValidUser,upload.single("image"),(editBlog))
 router.route("/").get(allBlogs)
 router.route("/delete/:id").get(isAuthenticated,isValidUser,deleteBlog)
-router.route("/single/:id").get(isAuthenticated,singleBlog)
+router.route("/single/:id").get(singleBlog)
 router.route("/myBlog").get(isAuthenticated,renderMyBlog)
 module.exports=router
