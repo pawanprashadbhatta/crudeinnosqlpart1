@@ -45,3 +45,14 @@ app.listen(PORT,()=>{
 
 //git maa upload folder remove garne command
 //git rm -r --cached foldername
+
+
+
+
+
+
+
+
+// Use req.params for accessing route parameters.
+// Use req.query to handle query parameters for filtering, pagination, or additional information in the URL.
+// Use req.body when sending structured data in the request body, commonly for POST, PUT, or PATCH requests.

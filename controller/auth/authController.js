@@ -82,7 +82,7 @@ if(userExist==0){
     res.send("no email found please register first..")
 }
 else{
-    const otpGenerated=Math.floor(1000000*Math.random(900000))
+    const otpGenerated=Math.floor(1000*Math.random(9999))
    // console.log(otpGenerated)
     //deyeko and vetyeko email ma otp pathaune
     sendEmail({
@@ -127,10 +127,13 @@ const userData=  await User.findAll({
     const currentTime=Date.now()//current time
     const otpGeneratedTime=userData[0].otpGeneratedTime//past time
     if(currentTime-otpGeneratedTime<=120000){
-      userData[0].otp=null
-      userData[0].otpGeneratedTime=null
-await userData[0].save()
-        res.redirect("/changePassword")
+//       userData[0].otp=null
+//       userData[0].otpGeneratedTime=null
+// await userData[0].save()
+        // res.redirect("/changePassword?userEmail="+userEmail)
+        res.redirect(`/changePassword?userEmail=${userEmail}&otp=${otp}`)
+       console.log(`otp and email is ${otp},${userEmail}`)
+       
     }else{
         res.send("otp has been expired")
     }
@@ -144,5 +147,54 @@ await userData[0].save()
 
   //changepassword api
   exports.renderChangePassword=(req,res)=>{
-    res.render("changePassword")
+    const userEmail = req.query.userEmail
+    const otp = req.query.otp 
+    console.log(req.query.userEmail,req.query.otp)
+    console.log(otp,userEmail)
+    if(!userEmail || !otp){
+      return res.send("Email and otp should be provided in the query")
   }
+    res.render("changePassword",{userEmail,otp})
+  }
+//handle change password
+  exports.handlePasswordChange=async(req,res)=>{
+  const {otp,userEmail}=req.params
+  console.log(req.params)
+ 
+     
+    const {newPassword,confirmPassword}=req.body
+   
+    console.log(` newPassword and confirmPassword email and otp=${newPassword}, ${confirmPassword} ${userEmail} ${otp}`)
+    if(!newPassword||!confirmPassword ||!userEmail ||!otp){
+      return res.send("please provide newPassword and confirm Password")
+    }
+    
+    if(newPassword !==confirmPassword){
+res.send("new password and confirm password doesnt match")
+    }
+
+ 
+  //match vayo vanee
+  // approach one to update password
+  const hashedNewPassword=bcrypt.hashSync(newPassword,8)
+  const userData=await User.findAll(
+    {
+      userEmail:userEmail
+    }
+  )
+
+  userData[0].password=hashedNewPassword
+  userData[0].save()
+  //next approach
+//   await User.update({
+    
+//       password:hashNewPassword
+//   },{ 
+//   where:{
+//     userEmail:userEmail
+//   }
+// })
+res.redirect("/login")
+}
+
+
